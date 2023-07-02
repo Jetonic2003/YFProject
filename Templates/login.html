@@ -16,10 +16,10 @@
         <main class="form-signin w-100 m-auto">
             <div class="row">
                 <div class="col-sm-5">
-            <form action = "http://localhost:5000/login" method = "post">
+            <form action = "{{url_for('login')}}" method = "POST">
               <div class="form-floating">
                 <input type="email" class="form-control" id="floatingInput" name="nm" placeholder="name@example.com">
-                <label for="floatingInput">用户名/邮箱地址</label>
+                <label for="floatingInput">邮箱地址</label>
               </div>
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" name="pw" placeholder="Password">
@@ -36,6 +36,7 @@
               <a href="{{url_for('signup')}}">
                 <button class="btn btn-secondary" type="button">注册</button>
               </a>
+                {{error}}
             </form>
                 </div>
                 <div class="col-sm-7">

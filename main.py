@@ -1,5 +1,5 @@
-from flask import Flask, render_template,request
-
+from flask import Flask, render_template, request, redirect, url_for
+import pymysql
 app = Flask(__name__)
 
 loggedid=-1
@@ -7,8 +7,23 @@ loggedid=-1
 def index():
     return render_template('index.html')
 
-@app.route('/login/')
+@app.route('/login/',methods=['GET', 'POST'])
 def login():
+    if request.method=="POST":
+        username=request.form['nm']
+        password=request.form['pw']
+        db=pymysql.connect(host="localhost",user="root",password="Jtnic027",database="jobdb")
+        cursor=db.cursor()
+        cursor.execute("SELECT * FROM users WHERE email=%s AND pass=%s",(username,password))
+        user=cursor.fetchone()
+        if user:
+            # 用户登录成功
+            return redirect(url_for('index'))
+        else:
+            error = '无效的用户名或密码，请重试。'
+            return render_template('login.html', error=error)
+
+        cur.close()
     return render_template('login.html')
 
 @app.route('/signup/')
