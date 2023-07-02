@@ -1,7 +1,7 @@
 from flask import Flask, render_template,request
 
 app = Flask(__name__)
-logd=0
+
 loggedid=-1
 @app.route('/')
 def index():
@@ -29,11 +29,12 @@ def money():
 
 @app.route('/personal/<id>')
 def personal(id):
-    return render_template('personal.html',id=id,logged=logd)
+    global loggedid
+    return render_template('personal.html',id=id,loggedid=loggedid)
 
-@app.route('/movieinfo/<id>')
-def movieinfo(id):
-    return render_template('movieinfo.html',id=id)
+@app.route('/movieinfo/<movieid>')
+def movieinfo(movieid):
+    return render_template('movieinfo.html',movieid=movieid)
 
 @app.route('/favorite/<id>')
 def favorite(id):

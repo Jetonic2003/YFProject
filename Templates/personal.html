@@ -17,11 +17,11 @@
                   <li class="nav-item"><a href="{{url_for('rank')}}" class="nav-link">评分排行</a></li>
                     <li class="nav-item"><a href="{{url_for('money')}}" class="nav-link">票房排行</a></li>
                   <li class="nav-item"><a href="#" class="nav-link">影评</a></li>
-                    {% if logged==0 %}
+                    {% if loggedid<0 %}
                         <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
                         <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
                     {% else %}
-                        <img src="{{url_for('static' ,filename='logo.png' )}}" width="25px" height="25px">
+                        <li class="nav-item">欢迎，ID{{loggedid}}</a></li>
                     {% endif %}
                   <li>
                     <form>
@@ -36,21 +36,20 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="text-center"><img src="AB S1.png" class="rounded" alt="...">
-                    <p>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary" style="display: none;">修改密码</button>
-                        <button type="button" class="btn btn-primary">我的收藏</button>
+                        <button type="button" class="btn btn-primary" >修改密码</button>
+                        <button type="button" class="btn btn-primary">收藏夹</button>
                     </div>
-                    </p>
                     </div>
                 </div>
                 <div class="col-sm-8">
                     <p style="font-size: medium;">用户ID:{{id}}</p>
+                    <form>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">昵称：
-                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            <input type="submit" class="btn btn-primary" id="namesub" style="display: none;" value="修改">
-                        </label>
+                            <input type="text" class="form-control" name="nickname" aria-describedby="emailHelp">
+                            <input type="submit" class="btn btn-primary" name="namesub"  value="修改">
+                        </label><!--换个逻辑，如果欲修改者与本人不符，则报错，拒绝修改-->
                     </div>
                     </form>
                 </div>
