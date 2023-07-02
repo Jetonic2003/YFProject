@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 
 app = Flask(__name__)
-
+logd=0
+loggedid=-1
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -28,7 +29,7 @@ def money():
 
 @app.route('/personal/<id>')
 def personal(id):
-    return render_template('personal.html',id=id)
+    return render_template('personal.html',id=id,logged=logd)
 
 @app.route('/movieinfo/<id>')
 def movieinfo(id):
