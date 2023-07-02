@@ -26,6 +26,10 @@ def money():
 def personal(id):
     return render_template('personal.html',id=id)
 
+@app.route('/movieinfo/<id>')
+def movieinfo(id):
+    return render_template('movieinfo.html',id=id)
+
 @app.route('/favorite/<id>')
 def favorite(id):
     return render_template('favorite.html',id=id)
