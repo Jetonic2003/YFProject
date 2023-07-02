@@ -14,6 +14,10 @@ def login():
 def signup():
     return render_template('signup.html')
 
+@app.route('/forget/')
+def forget():
+    return render_template('forget.html')
+
 @app.route('/rank')
 def rank():
     return render_template('rank.html')
