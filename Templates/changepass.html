@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>修改密码 - YF电影网</title>
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">  <!--此为页头-->
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" width="95" height="54">
+        </a>
+        <span class="fs-4">修改密码</span>
+      </header>
+    <main class="form-signin w-100 m-auto">
+        <form action="{{url_for('changepass')}}" method="POST">
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" name="oldpw" placeholder="Password">
+                <label for="floatingPassword">原密码</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" name="pw" placeholder="Password">
+                <label for="floatingPassword">新密码</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" name="pw2" placeholder="Password">
+                <label for="floatingPassword">确认新密码</label>
+            </div>
+            <button class="btn btn-primary" type="submit" value="submit">确定</button>
+        </form>
+        {{error}}
+    </main>
+</body>
+</html>

@@ -84,6 +84,39 @@ def personal(id):
         return render_template('personal.html', id=id, loggedid=session['id'])
     return render_template('personal.html',id=id,loggedid=-1)
 
+@app.route('/changepass/',methods=["POST","GET"])
+def changepass():
+    if 'id' in session:
+        if request.method=="POST":
+            oldpassword = request.form.get('oldpw')
+            password = request.form.get('pw')
+            password2 = request.form.get('pw2')
+            if(password2!=password):
+                error="两次密码不一致"
+                return render_template('changepass.html',error=error)
+            db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
+            cursor = db.cursor()
+            cursor.execute("SELECT pass FROM users WHERE id=%s", session['id'])
+            nowpassword = cursor.fetchone()
+            if(nowpassword[0]!=oldpassword):
+                error = "旧密码输入错误"
+                db.close()
+                return render_template('changepass.html', error=error)
+            try:
+                cursor.execute("UPDATE users SET pass=%s WHERE id=%s",(password, session['id']))
+                db.commit()
+                db.close()
+                session.clear()
+                return "密码已修改，请重新登录"
+            except:
+                db.rollback()
+                error="数据库操作失败，请重试"
+                db.close()
+                return render_template('changepass.html', error=error)
+        return render_template('changepass.html')
+    else:
+        return "当前未登录，请登陆后操作"
+
 @app.route('/movieinfo/<movieid>')
 def movieinfo(movieid):
     if 'id' in session:
