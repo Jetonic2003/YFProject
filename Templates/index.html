@@ -17,11 +17,12 @@
           <li class="nav-item"><a href="{{url_for('rank')}}" class="nav-link">评分排行</a></li>
           <li class="nav-item"><a href="{{url_for('money')}}" class="nav-link">票房排行</a></li>
           <li class="nav-item"><a href="#" class="nav-link">影评</a></li>
+          {%if loggedid<0%}
           <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
           <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
-          <li><div id="userProfile" style="display: none;">
-            <img src="user_avatar.jpg" alt="用户头像">
-          </div></li>
+          {%else%}
+          <li class="nav-item"><a href="{{url_for('personal',id=loggedid)}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
+          {%endif%}
           <li>
             <form>
               <div class="mb-3">

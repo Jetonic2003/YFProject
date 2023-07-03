@@ -18,23 +18,23 @@
                 <div class="col-sm-5">
             <form>
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="floatingUsername" placeholder="User name">
+                    <input type="text" class="form-control" id="floatingUsername" name="username" placeholder="User name">
                     <label for="floatingInput">用户名</label>
                   </div>
               <div class="form-floating">
-                <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com">
+                <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com">
                 <label for="floatingInput">邮箱</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
                 <label for="floatingPassword">密码</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control" id="floating2Password" placeholder="Password">
+                <input type="password" class="form-control" id="floating2Password" name="password2" placeholder="Password">
                 <label for="floatingPassword">确认密码</label>
               </div>
               <button class="w-50 btn btn-primary" type="submit">下一步</button>
-              
+              {{error}}
             </form>
                 </div>
                 <div class="col-sm-7">

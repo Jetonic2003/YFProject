@@ -6,33 +6,33 @@
     </head>
     <body>
         <div class="container">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">  <!--此为页头-->
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                  <img src="logo.png" width="95" height="54">
-                </a>
-        
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">首页</a></li>
-                  <li class="nav-item"><a href="#" class="nav-link">电影</a></li>
-                  <li class="nav-item"><a href="{{url_for('rank')}}" class="nav-link">评分排行</a></li>
-                    <li class="nav-item"><a href="{{url_for('money')}}" class="nav-link">票房排行</a></li>
-                  <li class="nav-item"><a href="#" class="nav-link">影评</a></li>
-                    {% if loggedid<0 %}
-                        <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
-                        <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
-                    {% else %}
-                        <li class="nav-item">欢迎，ID{{loggedid}}</a></li>
-                    {% endif %}
-                  <li>
-                    <form>
-                      <div class="mb-3">
-                        <input type="search" name="searchfilm">
-                        <input type="submit" name="gosearch" value="搜索">
-                      </div>
-                    </form>
-                  </li>
-                </ul>
-            </header>
+                  <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">  <!--此为页头-->
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" width="95" height="54">
+        </a>
+
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a href="{{url_for('index')}}" class="nav-link active" aria-current="page">首页</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">电影</a></li>
+          <li class="nav-item"><a href="{{url_for('rank')}}" class="nav-link">评分排行</a></li>
+          <li class="nav-item"><a href="{{url_for('money')}}" class="nav-link">票房排行</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">影评</a></li>
+          {%if loggedid<0%}
+          <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
+          <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
+          {%else%}
+          <li class="nav-item"><a href="{{url_for('personal',id=loggedid)}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
+          {%endif%}
+          <li>
+            <form>
+              <div class="mb-3">
+                <input type="search" name="searchfilm">
+                <input type="submit" name="gosearch" value="搜索">
+              </div>
+            </form>
+          </li>
+        </ul>
+      </header>
             <div class="row">
                 <div class="col-sm-4">
                     <div class="text-center"><img src="AB S1.png" class="rounded" alt="...">
@@ -48,7 +48,11 @@
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">昵称：
                             <input type="text" class="form-control" name="nickname" aria-describedby="emailHelp">
+                            {% if loggedid!=id %}
                             <input type="submit" class="btn btn-primary" name="namesub"  value="修改">
+                            {%else%}
+                            <p>你不是此用户主人，不能修改</p>
+                            {% endif %}
                         </label><!--换个逻辑，如果欲修改者与本人不符，则报错，拒绝修改-->
                     </div>
                     </form>
