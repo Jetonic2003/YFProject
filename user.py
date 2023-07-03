@@ -11,7 +11,7 @@ Base = declarative_base(engine)
 # 创建一个用户的类
 class User(Base):
     __tablename__='users'
-    user_id=Column(Integer,primary_key=True)
-    user_name=Column(String(255))
-    user_pass = Column(String(255))
-    user_email = Column(String(255))
+    id=Column(Integer,primary_key=True)
+    name=Column(String(255))
+    password=Column(String(255))
+    email = Column(String(255))

@@ -16,7 +16,7 @@ def login():
         password=request.form['pw']
         db=pymysql.connect(host="localhost",user="root",password="Jtnic027",database="jobdb")
         cursor=db.cursor()
-        cursor.execute("SELECT * FROM users WHERE email=%s AND pass=%s",(username,password))
+        cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s",(username,password))
         user=cursor.fetchone()
         if user:
             # 用户登录成功
@@ -50,7 +50,7 @@ def signup():
             error="两次密码不一致"
             return render_template('signup.html', error=error)
         else:
-            sql="INSERT INTO users (name,pass,email) VALUES(%s,%s,%s)"
+            sql="INSERT INTO users (name,password,email) VALUES(%s,%s,%s)"
             try:
                 cursor.execute(sql,(username,password,email))
                 db.commit()
@@ -95,11 +95,15 @@ def changename():
             nickname = request.form.get('nickname')
             db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
             cursor = db.cursor()
-            cursor.execute("SELECT * FROM users WHERE name=%s", name)
+            cursor.execute("SELECT * FROM users WHERE name=%s", nickname)
             dump=cursor.fetchone()
             if(dump):
-                db.close()  # 重复，不予修改
-        return render_template('personal.html', loggedid=session['id'],nickname=nickname)
+                db.close()
+            else:
+                cursor.execute("UPDATE users SET name=%s WHERE id=%s",(nickname,session['id']))
+                db.commit()
+                db.close()
+        return redirect(url_for("personal"))
     return "请先登录/注册"
 
 @app.route('/changepass/',methods=["POST","GET"])
@@ -114,14 +118,14 @@ def changepass():
                 return render_template('changepass.html',error=error)
             db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
             cursor = db.cursor()
-            cursor.execute("SELECT pass FROM users WHERE id=%s", session['id'])
+            cursor.execute("SELECT password FROM users WHERE id=%s", session['id'])
             nowpassword = cursor.fetchone()
             if(nowpassword[0]!=oldpassword):
                 error = "旧密码输入错误"
                 db.close()
                 return render_template('changepass.html', error=error)
             try:
-                cursor.execute("UPDATE users SET pass=%s WHERE id=%s",(password, session['id']))
+                cursor.execute("UPDATE users SET password=%s WHERE id=%s",(password, session['id']))
                 db.commit()
                 db.close()
                 session.clear()
