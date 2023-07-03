@@ -16,7 +16,7 @@
         <main class="form-signin w-100 m-auto">
             <div class="row">
                 <div class="col-sm-5">
-            <form>
+            <form action = "{{url_for('signup')}}" method = "POST">
                 <div class="form-floating">
                     <input type="text" class="form-control" id="floatingUsername" name="username" placeholder="User name">
                     <label for="floatingInput">用户名</label>
@@ -34,11 +34,11 @@
                 <label for="floatingPassword">确认密码</label>
               </div>
               <button class="w-50 btn btn-primary" type="submit">下一步</button>
-              {{error}}
+
             </form>
                 </div>
                 <div class="col-sm-7">
-
+                <p>{{error}}</p>
                 </div>
             </div>
           </main>

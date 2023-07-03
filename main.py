@@ -30,7 +30,7 @@ def login():
         cur.close()
     return render_template('login.html')
 
-@app.route('/signup/')
+@app.route('/signup/',methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -39,25 +39,26 @@ def signup():
         password2 = request.form.get('password2')
         db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE name=%s",(username))
-        namelist=cursor.fetchall()  ##判断用户名
-        cursor.execute("SELECT * FROM users WHERE email=%s",(email))
-        emaillist=cursor.fetchall() ##判断邮箱
-        if(len(namelist) or len(emaillist)):
+        cursor.execute("SELECT * FROM users WHERE name=%s", username)
+        namelist=cursor.fetchone()  ##判断用户名
+        cursor.execute("SELECT * FROM users WHERE email=%s", email)
+        emaillist=cursor.fetchone() ##判断邮箱
+        if(namelist or emaillist):
             error="用户名或邮箱已经注册"
             return render_template('signup.html',error=error)
         elif(password2!=password):
             error="两次密码不一致"
             return render_template('signup.html', error=error)
         else:
-            sql="""INSERT INTO users
-            (name,pass,email)
-            VALUES(%s,%s,%s)"""
+            sql="INSERT INTO users (name,pass,email) VALUES(%s,%s,%s)"
             try:
                 cursor.execute(sql,(username,password,email))
                 db.commit()
+                return redirect(url_for('login'))
             except:
                 db.rollback()
+                error="数据库操作出错"
+                return render_template('signup.html', error=error)
         db.close()
     return render_template('signup.html')
 
