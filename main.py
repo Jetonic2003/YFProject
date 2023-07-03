@@ -3,12 +3,12 @@ import pymysql
 app = Flask(__name__)
 app.secret_key='your_secret_key'
 @app.route('/')
-def index():
+def index():    # 首页
     if 'id' in session:
         return render_template("index.html",loggedid=session['id'])
     return render_template('index.html',loggedid=-1)
 
-@app.route('/login/',methods=['GET', 'POST'])
+@app.route('/login/',methods=['GET', 'POST'])   # 登录
 def login():
     global loggedid
     if request.method=="POST":
@@ -78,11 +78,29 @@ def money():
         return render_template('movieinfo.html', loggedid=session['id'])
     return render_template('money.html',loggedid=-1)
 
-@app.route('/personal/<id>')
-def personal(id):
+@app.route('/personal/')
+def personal():
     if 'id' in session:
-        return render_template('personal.html', id=id, loggedid=session['id'])
-    return render_template('personal.html',id=id,loggedid=-1)
+        db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
+        cursor = db.cursor()
+        cursor.execute("SELECT name FROM users WHERE id=%s", session['id'])
+        nickname=cursor.fetchone()[0]
+        return render_template('personal.html', loggedid=session['id'],nickname=nickname)
+    return "请先登录/注册"
+
+@app.route('/changename/',methods=["POST","GET"])
+def changename():
+    if 'id' in session:
+        if request.method=="POST":
+            nickname = request.form.get('nickname')
+            db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
+            cursor = db.cursor()
+            cursor.execute("SELECT * FROM users WHERE name=%s", name)
+            dump=cursor.fetchone()
+            if(dump):
+                db.close()  # 重复，不予修改
+        return render_template('personal.html', loggedid=session['id'],nickname=nickname)
+    return "请先登录/注册"
 
 @app.route('/changepass/',methods=["POST","GET"])
 def changepass():
@@ -125,7 +143,11 @@ def movieinfo(movieid):
 
 @app.route('/favorite/<id>')
 def favorite(id):
-    return render_template('favorite.html',id=id)
+    db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
+    cursor = db.cursor()
+    cursor.execute("SELECT name FROM users WHERE id=%s", id)
+    username=cursor.fetchone()[0]
+    return render_template('favorite.html',username=username)
 
 @app.route('/logout')
 def logout():

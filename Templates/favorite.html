@@ -17,11 +17,13 @@
           <li class="nav-item"><a href="{{url_for('rank')}}" class="nav-link">评分排行</a></li>
           <li class="nav-item"><a href="{{url_for('money')}}" class="nav-link">票房排行</a></li>
           <li class="nav-item"><a href="#" class="nav-link">影评</a></li>
+          {%if loggedid<0%}
           <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
           <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
-          <li><div id="userProfile" style="display: none;">
-            <img src="user_avatar.jpg" alt="用户头像">
-          </div></li>
+          {%else%}
+          <li class="nav-item"><a href="{{url_for('personal')}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
+          <li class="nav-item"><a href="{{url_for('logout')}}" class="nav-link" id="logButton">退出</a></li>
+          {%endif%}
           <li>
             <form>
               <div class="mb-3">
@@ -37,7 +39,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>我的收藏 - YF电影</title>
+  <title>{{username}}的收藏 - YF电影</title>
   <style>
     /* 添加一些基本的样式 */
     body {
@@ -78,7 +80,7 @@
   </style>
 </head>
 <body>
-  <h1>{{id}}的收藏</h1>
+  <h1>{{username}}的收藏</h1>
   <ul class="movie-list">
     <li class="movie-item">
       <img src="movie1.jpg" alt="电影1">

@@ -21,7 +21,7 @@
           <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
           <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
           {%else%}
-          <li class="nav-item"><a href="{{url_for('personal',id=loggedid)}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
+          <li class="nav-item"><a href="{{url_for('personal')}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
           <li class="nav-item"><a href="{{url_for('logout')}}" class="nav-link" id="logButton">退出</a></li>
             {%endif%}
           <li>

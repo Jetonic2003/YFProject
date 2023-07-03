@@ -21,7 +21,8 @@
           <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
           <li class="nav-item"><a href="{{url_for('signup')}}" class="nav-link" id="logButton">注册</a></li>
           {%else%}
-          <li class="nav-item"><a href="{{url_for('personal',id=loggedid)}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
+          <li class="nav-item"><a href="{{url_for('personal')}}" class="nav-link" id="logButton">欢迎，ID{{loggedid}}</a></li>
+          <li class="nav-item"><a href="{{url_for('logout')}}" class="nav-link" id="logButton">退出</a></li>
           {%endif%}
           <li>
             <form>
@@ -35,25 +36,20 @@
       </header>
             <div class="row">
                 <div class="col-sm-4">
-                    <div class="text-center"><img src="AB S1.png" class="rounded" alt="...">
+                    <div class="text-center"><img src="AB S1.png" class="rounded"><br>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary"><a href="{{url_for('changepass')}}">修改密码</a></button>
-                        <button type="button" class="btn btn-primary">收藏夹</button>
+                        <a href="{{url_for('changepass')}}"><button type="button" class="btn btn-primary">修改密码</button></a>
+                        <a href="{{url_for('favorite',id=id)}}"><button type="button" class="btn btn-primary">收藏夹</button></a>
                     </div>
                     </div>
                 </div>
                 <div class="col-sm-8">
-                    <p style="font-size: medium;">用户ID:{{id}}</p>
-                    <form>
+                    <form action="{{url_for('changename')}}" method="POST">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">昵称：
-                            <input type="text" class="form-control" name="nickname" aria-describedby="emailHelp">
-                            {% if loggedid!=id %}
+                        <label for="exampleInputEmail1" class="form-label">用户名：
+                            <input type="text" class="form-control" name="nickname" value="{{nickname}}" aria-describedby="emailHelp">
                             <input type="submit" class="btn btn-primary" name="namesub"  value="修改">
-                            {%else%}
-                            <p>你不是此用户主人，不能修改</p>
-                            {% endif %}
-                        </label><!--换个逻辑，如果欲修改者与本人不符，则报错，拒绝修改-->
+                        </label>
                     </div>
                     </form>
                 </div>
