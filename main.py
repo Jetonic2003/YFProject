@@ -166,13 +166,14 @@ def movieinfo(movieid):
         return render_template('movieinfo.html', movieid=id, loggedid=session['id'])
     return render_template('movieinfo.html',movieid=id,loggedid=-1)
 
-@app.route('/favorite/<id>')
-def favorite(id):
+@app.route('/favorite/')
+def favorite():
     db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
     cursor = db.cursor()
-    cursor.execute("SELECT name FROM users WHERE id=%s", id)
+    cursor.execute("SELECT name FROM users WHERE id=%s", session['id'])
     username=cursor.fetchone()[0]
-    return render_template('favorite.html',username=username)
+    db.close()
+    return render_template('favorite.html',username=username,loggedid=session['id'])
 
 @app.route('/logout')
 def logout():
