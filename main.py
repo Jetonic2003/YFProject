@@ -1,12 +1,39 @@
+import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for,session
 import pymysql
+import requests
+
 app = Flask(__name__)
 app.secret_key='your_secret_key'
+def dowloadimg(url,name):
+    response = requests.get(url)
+    if response.status_code == 200:
+        image_data = response.content
+        with open(f"static/img/{name}.jpg", "wb") as file:
+            file.write(image_data)
+
 @app.route('/')
-def index():    # 首页
+def index():
+    df = pd.read_csv('douban_movies.csv',encoding='gbk')
+    df1 = pd.read_csv('豆瓣Top250.csv',encoding='gbk')
+    data = df[['name','pic']].values.tolist()[:6]
+    data1 = df1['电影名'].tolist()[:10]
+    data2 = df[['name','pic']].values.tolist()[-9:]
+
+    for i in data:
+        name = i[0]
+        url = i[1]  # 图片的URL
+        dowloadimg(url, name)
+
+    for i in data2:
+        name = i[0]
+        url = i[1]  # 图片的URL
+        dowloadimg(url, name)
+    data2 = [data2[i:i + 3] for i in range(0, len(data2), 3)]
+    print(data2)
     if 'id' in session:
-        return render_template("index.html",loggedid=session['id'])
-    return render_template('index.html',loggedid=-1)
+        return render_template("index.html",loggedid=session['id'],data=data,data1=data1,data2=data2)
+    return render_template('index.html',loggedid=-1,data=data,data1=data1,data2=data2)
 
 @app.route('/login/',methods=['GET', 'POST'])   # 登录
 def login():
@@ -71,12 +98,6 @@ def rank():
     if 'id' in session:
         return render_template('rank.html', loggedid=session['id'])
     return render_template('rank.html',loggedid=-1)
-
-@app.route('/money')
-def money():
-    if 'id' in session:
-        return render_template('movieinfo.html', loggedid=session['id'])
-    return render_template('money.html',loggedid=-1)
 
 @app.route('/personal/')
 def personal():

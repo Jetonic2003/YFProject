@@ -15,7 +15,6 @@
           <li class="nav-item"><a href="{{url_for('index')}}" class="nav-link active" aria-current="page">首页</a></li>
           <li class="nav-item"><a href="#" class="nav-link">电影</a></li>
           <li class="nav-item"><a href="{{url_for('rank')}}" class="nav-link">评分排行</a></li>
-          <li class="nav-item"><a href="{{url_for('money')}}" class="nav-link">票房排行</a></li>
           <li class="nav-item"><a href="#" class="nav-link">影评</a></li>
           {%if loggedid<0%}
           <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link" id="loginButton">登录</a></li>
@@ -40,44 +39,14 @@
             <div class="col-sm-8">  <!--推荐电影，3x2布局-->
               <h5>新片速递&nbsp;<a href="#">更多</a></h5>
               <div class="row">
+                {% for i in data %}
                 <div class="col-sm-4">
                   <figure class="figure">
-                    <img src="AB S1.png" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
+                    <img src="{{ url_for('static',filename='img/') }}{{ i[0] }}.jpg" class="figure-img img-fluid rounded" alt="...">
+                    <figcaption class="figure-caption">{{ i[0] }}</figcaption>
                   </figure>
                 </div>
-                <div class="col-sm-4">
-                  <figure class="figure">
-                    <img src="AB S1.png" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
-                  </figure>
-                </div>
-                <div class="col-sm-4">
-                  <figure class="figure">
-                    <img src="AB S1.png" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
-                  </figure>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-4">
-                  <figure class="figure">
-                    <img src="AB S1.png" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
-                  </figure>
-                </div>
-                <div class="col-sm-4">
-                  <figure class="figure">
-                    <img src="AB S1.png" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
-                  </figure>
-                </div>
-                <div class="col-sm-4">
-                  <figure class="figure">
-                    <img src="AB S1.png" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
-                  </figure>
-                </div>
+                {% endfor %}
               </div>
             </div>
             <div class="col-sm-4">  <!--分类和排行榜,10个-->
@@ -93,16 +62,14 @@
               </div>
               <h4>排行榜 <button>更多</button></h4>
               <ul class="list-group">
-                <li class="list-group-item" aria-current="true">An active item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-                <li class="list-group-item" >An active item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
+                 {% for i in data1 %}
+                {% if loop.first %}
+                  <li class="list-group-item" aria-current="true">{{i}}</li>
+
+                {% endif %}
+              <li class="list-group-item">{{i}}</li>
+
+                {% endfor %}
               </ul>
             </div>
           </div>
@@ -112,108 +79,25 @@
       <section id="reviews">
         <h2 style="text-align: center;">电影大全</h2>
       <p style="text-align: right;"><button>更多</button></p>
+        {% for i in data2 %}
         <div class="container text-center">
             <div class="row">
+              {% for x in i %}
               <div class="col">
                 <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
+                    <img src="{{ url_for('static',filename='img/') }}{{ x[0] }}.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
+                      <h5 class="card-title">{{ x[0] }}</h5>
                       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                       <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                   </div>
               </div>
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
+              {% endfor %}
+
             </div>
           </div>
-          <div class="container text-center">
-            <div class="row">
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="container text-center">
-            <div class="row">
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-              <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="武警.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
+        {% endfor %}
           </section>
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"> <!--此为页尾-->
         <div class="col-md-4 d-flex align-items-center">
