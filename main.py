@@ -67,11 +67,15 @@ def forget():
 
 @app.route('/rank')
 def rank():
-    return render_template('rank.html')
+    if 'id' in session:
+        return render_template('rank.html', loggedid=session['id'])
+    return render_template('rank.html',loggedid=-1)
 
 @app.route('/money')
 def money():
-    return render_template('money.html')
+    if 'id' in session:
+        return render_template('movieinfo.html', loggedid=session['id'])
+    return render_template('money.html',loggedid=-1)
 
 @app.route('/personal/<id>')
 def personal(id):
@@ -81,12 +85,18 @@ def personal(id):
 
 @app.route('/movieinfo/<movieid>')
 def movieinfo(movieid):
-    return render_template('movieinfo.html',movieid=movieid)
+    if 'id' in session:
+        return render_template('movieinfo.html', movieid=id, loggedid=session['id'])
+    return render_template('movieinfo.html',movieid=id,loggedid=-1)
 
 @app.route('/favorite/<id>')
 def favorite(id):
     return render_template('favorite.html',id=id)
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run('0.0.0.0',debug = True)
