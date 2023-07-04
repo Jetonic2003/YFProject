@@ -19,20 +19,15 @@ def login():
     if request.method=="POST":
         username=request.form['nm']
         password=request.form['pw']
-        db=pymysql.connect(host="localhost",user="root",password="Jtnic027",database="jobdb")
-        cursor=db.cursor()
-        cursor.execute("SELECT * FROM user WHERE email=%s AND password=%s",(username,password))
-        user=cursor.fetchone()
+        user=userservice.userlogin(username,password)
         if user:
             # 用户登录成功
-            session['id']=user[0]
-            session['username']=user[1]
+            session['id']=user.id
+            session['username']=user.name
             return redirect(url_for('index'))
         else:
             error = '无效的用户名或密码，请重试。'
             return render_template('login.html', error=error)
-
-        cur.close()
     return render_template('login.html')
 
 @app.route('/signup/',methods=['GET', 'POST'])
@@ -42,29 +37,12 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
         password2 = request.form.get('password2')
-        db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM user WHERE name=%s", username)
-        namelist=cursor.fetchone()  ##判断用户名
-        cursor.execute("SELECT * FROM user WHERE email=%s", email)
-        emaillist=cursor.fetchone() ##判断邮箱
-        if(namelist or emaillist):
-            error="用户名或邮箱已经注册"
+        if(userservice.get_user_by_email(email) or userservice.get_user_by_name(username)):
+            error="用户名或密码已注册"
             return render_template('signup.html',error=error)
-        elif(password2!=password):
-            error="两次密码不一致"
-            return render_template('signup.html', error=error)
         else:
-            sql="INSERT INTO user (name,password,email) VALUES(%s,%s,%s)"
-            try:
-                cursor.execute(sql,(username,password,email))
-                db.commit()
-                return redirect(url_for('login'))
-            except:
-                db.rollback()
-                error="数据库操作出错"
-                return render_template('signup.html', error=error)
-        db.close()
+            userservice.create_user(username,password,email)
+            return redirect(url_for('index'))
     return render_template('signup.html')
 
 @app.route('/forget/')
