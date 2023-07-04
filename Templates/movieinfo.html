@@ -34,25 +34,27 @@
         </ul>
       </header>
     <section>
+        {%for move in movie%}
         <div class="row">
             <div class="col-3">
+                <img src="{{move.img}}">
             <!--这里是电影海报-->
             </div>
             <div class="col-6">
-                <h2>{{id}}</h2>
-                <h5>类型、地区、时长</h5>
+                <h2>{{move.title}}</h2><h3>{{move.release_date}} {{move.country}} {{move.language}}</h3>
+                <h5>{{move.style1}} {{move.style2}} {{move.style3}}</h5>
+                <h5>时长：{{move.running_time}}分钟</h5>
             </div>
         </div>
         <div class="row">
-            <h4>评分</h4>
-            <h3>10.0</h3><hr>
+            <h4>豆瓣评分</h4>
+            <h3>{{move.score}}</h3><hr>
             <h4>剧情简介</h4>
-            <p>10.0</p>
+            <p>{{move.Introduction}}</p>
             <h4>演职人员</h4>
-            <p>导演：路人甲 编剧：路人乙 主演：路人丙</p>
-            <h4>热门影评</h4>
-            <p>导演：路人甲 编剧：路人乙 主演：路人丙</p>
+            <p>导演：{{move.director}}</p><p>编剧：{{move.writer}}</p><p>主演：{{move.actors}}</p>
         </div>
+        {%endfor%}
     </section>
 </div>
 </body>

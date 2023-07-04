@@ -81,38 +81,13 @@
 <body>
   <h1>{{username}}的收藏</h1>
   <ul class="movie-list">
+    {% for favorite in favorites %}
     <li class="movie-item">
-      <img src="movie1.jpg" alt="电影1">
-      <h2 class="movie-title">电影标题1</h2>
+      <img src="{{favorite['img']}}" alt="电影1">
+      <h2 class="{{favorite['title']}}">电影标题1</h2>
       <p class="movie-description">电影描述1</p>
     </li>
-    <li class="movie-item">
-      <img src="movie2.jpg" alt="电影2">
-      <h2 class="movie-title">电影标题2</h2>
-      <p class="movie-description">电影描述2</p>
-    </li>
-    <li class="movie-item">
-      <img src="movie3.jpg" alt="电影3">
-      <h2 class="movie-title">电影标题3</h2>
-      <p class="movie-description">电影描述3</p>
-    </li>
-    <li class="movie-item">
-      <img src="movie4.jpg" alt="电影4">
-      <h2 class="movie-title">电影标题4</h2>
-      <p class="movie-description">电影描述4</p>
-    </li>
-  
-  <li class="movie-item">
-    <img src="movie4.jpg" alt="电影5">
-    <h2 class="movie-title">电影标题5</h2>
-    <p class="movie-description">电影描述5</p>
-  
-  </li>
-    <li class="movie-item">
-    <img src="movie4.jpg" alt="电影6">
-    <h2 class="movie-title">电影标题6</h2>
-    <p class="movie-description">电影描述6</p>
-  </li>
+    {%endfor%}
     <!-- 在此添加更多的电影项 -->
   </ul>
 </body>

@@ -35,22 +35,19 @@
       </header>
       <section>
         <h3>评分排行榜</h3>
-        {%for num in range(1,11)%}
+        {%for movie in movies%}
         <div class="row">
           <hr>
-          <div class="col-1">
-            {{num}}
-          </div>
-          <div class="col-2">
-            <img src="{{url_for('static', filename='img/AB S1.png') }}">
+          <div class="col-3">
+            <img src="{{movie.img|e}}">
           </div>
           <div class="col-7">
-            <h4>片名</h4>
-            <h5>主演</h5>
-            <h6>上映日期</h6>
+            <h4>{{ movie.title|e }}</h4>
+            <h5>{{ movie.director|e }} {{ movie.actors|e }}</h5>
+            <h6>{{ movie.release_date|e }}</h6>
           </div>
           <div class="col-2">
-            <h2>10.0</h2>
+            <h2>{{movie.score|e}}</h2>
           </div>
         </div>
         {%endfor%}

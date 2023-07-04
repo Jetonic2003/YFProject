@@ -39,11 +39,11 @@
             <div class="col-sm-8">  <!--推荐电影，3x2布局-->
               <h5>新片速递&nbsp;<a href="#">更多</a></h5>
               <div class="row">
-                {% for i in data %}
-                <div class="col-sm-4">
+                {% for movie in movies %}
+                <div class="col-sm-3">
                   <figure class="figure">
-                    <img src="{{ url_for('static',filename='img/') }}{{ i[0] }}.jpg" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">{{ i[0] }}</figcaption>
+                    <img src="{{movie.img}}" class="figure-img img-fluid rounded" alt="...">
+                    <figcaption class="figure-caption">{{ movie.title }}</figcaption>
                   </figure>
                 </div>
                 {% endfor %}
