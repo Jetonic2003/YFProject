@@ -3,6 +3,10 @@ from flask import Flask, render_template, request, redirect, url_for,session
 import pymysql
 import requests
 import movieservice,commentservice,entity,userservice,favoriteservice
+import smtplib
+from email.header import Header
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 app.secret_key='your_secret_key'
@@ -37,8 +41,11 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
         password2 = request.form.get('password2')
-        if(userservice.get_user_by_email(email) or userservice.get_user_by_name(username)):
-            error="用户名或密码已注册"
+        if(password!=password2):
+            error="两次密码不一致"
+            return render_template('signup.html', error=error)
+        elif(userservice.get_user_by_email(email) or userservice.get_user_by_name(username)):
+            error="用户名或邮箱已注册"
             return render_template('signup.html',error=error)
         else:
             userservice.create_user(username,password,email)
