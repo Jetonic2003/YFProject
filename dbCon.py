@@ -13,5 +13,5 @@ engine = create_engine(DB_URI)
 
 #创建连接
 with engine.connect() as con:
-    rs = con.execute(text('SELECT * FROM users'))
+    rs = con.execute(text('SELECT * FROM user'))
     print(rs.fetchone())
