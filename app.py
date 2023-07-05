@@ -115,11 +115,7 @@ def movieinfo(movieid):
 
 @app.route('/favorite/')
 def favorite():
-    db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
-    cursor = db.cursor()
-    cursor.execute("SELECT name FROM user WHERE id=%s", session['id'])
-    username=cursor.fetchone()[0]
-    db.close()
+    username=userservice.get_user_by_id(session['id']).name
     favorites=favoriteservice.get_favorites_by_user_id(session['id'])
     fmovie_info=[]
     for favorite in favorites:
