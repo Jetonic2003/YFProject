@@ -91,24 +91,16 @@ def changepass():
             if(password2!=password):
                 error="两次密码不一致"
                 return render_template('changepass.html',error=error)
-            db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
-            cursor = db.cursor()
-            cursor.execute("SELECT password FROM user WHERE id=%s", session['id'])
-            nowpassword = cursor.fetchone()
-            if(nowpassword[0]!=oldpassword):
+            nowpassword=userservice.get_user_by_id(session['id']).password
+            if(nowpassword!=oldpassword):
                 error = "旧密码输入错误"
-                db.close()
                 return render_template('changepass.html', error=error)
             try:
-                cursor.execute("UPDATE user SET password=%s WHERE id=%s",(password, session['id']))
-                db.commit()
-                db.close()
+                userservice.update_user(session['id'],None,password)
                 session.clear()
                 return "密码已修改，请重新登录"
             except:
-                db.rollback()
                 error="数据库操作失败，请重试"
-                db.close()
                 return render_template('changepass.html', error=error)
         return render_template('changepass.html')
     else:
