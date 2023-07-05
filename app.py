@@ -66,10 +66,8 @@ def rank():
 @app.route('/personal/')
 def personal():
     if 'id' in session:
-        db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
-        cursor = db.cursor()
-        cursor.execute("SELECT name FROM user WHERE id=%s", session['id'])
-        nickname=cursor.fetchone()[0]
+        user=userservice.get_user_by_id(session['id'])
+        nickname=user.name
         return render_template('personal.html', loggedid=session['id'],nickname=nickname)
     return "请先登录/注册"
 
@@ -78,16 +76,8 @@ def changename():
     if 'id' in session:
         if request.method=="POST":
             nickname = request.form.get('nickname')
-            db = pymysql.connect(host="localhost", user="root", password="Jtnic027", database="jobdb")
-            cursor = db.cursor()
-            cursor.execute("SELECT * FROM user WHERE name=%s", nickname)
-            dump=cursor.fetchone()
-            if(dump):
-                db.close()
-            else:
-                cursor.execute("UPDATE user SET name=%s WHERE id=%s",(nickname,session['id']))
-                db.commit()
-                db.close()
+            if(not userservice.get_user_by_name(nickname)):
+                userservice.update_user(session['id'],nickname)
         return redirect(url_for("personal"))
     return "请先登录/注册"
 
