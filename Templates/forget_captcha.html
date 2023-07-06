@@ -13,12 +13,13 @@
         <span class="fs-4">找回密码</span>
       </header>
     <section>
-        <form action="{{url_for('forget')}}" method="POST">
+        <form action="{{url_for('forget_cap')}}" method="POST">
         <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
-                <label for="floatingInput">邮箱地址</label>
+                <input type="text" class="form-control" id="floatingInput" name="captcha" >
+                <label for="floatingInput">已经发送到邮箱，请输入验证码</label>
             <p>{{error}}</p>
               </div>
+            <a  href="{{url_for('forget')}}"><button class="w-50 btn btn-primary" type="button">上一步</button></a>
         <button class="w-50 btn btn-primary" type="submit">下一步</button>
         </form>
     </section>

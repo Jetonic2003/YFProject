@@ -1,15 +1,13 @@
-import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for,session
-import pymysql
-import requests
 import movieservice,commentservice,entity,userservice,favoriteservice
 import smtplib
 from email.header import Header
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+import random
 app = Flask(__name__)
 app.secret_key='your_secret_key'
+forget_captcha=""
 
 @app.route('/')
 def index():
@@ -52,9 +50,69 @@ def signup():
             return redirect(url_for('index'))
     return render_template('signup.html')
 
-@app.route('/forget/')
+@app.route('/forget/',methods=['GET', 'POST'])
 def forget():
+    global forget_captcha
+    forget_captcha=""
+    if 'id' in session:
+        return "请退出账号再进行相关操作"
+    if request.method=="POST":
+        emailname=request.form.get('email')
+        if not userservice.get_user_by_email(emailname):
+            error="查无此人！请重新输入邮箱。"
+            return render_template("forget.html",error=error)
+        session['email']=emailname
+        # 创建邮件主体对象
+        email = MIMEMultipart()
+        # 设置发件人、收件人和主题
+        email['From'] = '15327327862@163.com'
+        email['To'] = emailname
+        email['Subject'] = Header('发送验证码', 'utf-8')
+        for i in range(4):
+            forget_captcha+=chr(random.randint(48,57))
+        # 添加邮件正文内容
+        content = forget_captcha+"这是您的验证码"
+        email.attach(MIMEText(content, 'plain', 'utf-8'))
+        # 创建SMTP_SSL对象（连接邮件服务器）
+        smtp_obj = smtplib.SMTP_SSL('smtp.163.com', 465)
+        # 通过用户名和授权码进行登录
+        smtp_obj.login('15327327862@163.com', 'UJSNRLCSKVMDHIQR')
+        # 发送邮件（发件人、收件人、邮件内容（字符串））
+        smtp_obj.sendmail(
+            '15327327862@163.com',
+            emailname,
+            email.as_string()
+        )
+        return redirect(url_for('forget_cap'))
     return render_template('forget.html')
+
+@app.route('/forget_cap/',methods=['GET', 'POST'])
+def forget_cap():
+    global forget_captcha
+    if request.method=="POST":
+        captcha=request.form.get('captcha')
+        if(captcha!=forget_captcha):
+            error="验证码错误，请重新输入"
+            return render_template('forget_captcha.html',error=error)
+        else:
+            forget_captcha=""   # 清空验证码
+            return redirect(url_for('forget_changepass'))
+    return render_template('forget_captcha.html')
+
+@app.route('/forget_changepass/',methods=['GET', 'POST'])
+def forget_changepass():
+    if request.method=="POST":
+        password = request.form.get('password')
+        password2 = request.form.get('password2')
+        if(password!=password2):
+            error="两次密码不一致，请检查"
+            return render_template('forget_changepass.html',error=error)
+        else:
+            user=userservice.get_user_by_email(session['email'])
+            userservice.update_user(user.id,None,password)
+            session.clear()
+            return "恭喜！您的密码已经成功找回，请重新登录！"
+    return render_template('forget_changepass.html')
 
 @app.route('/rank')
 def rank():
